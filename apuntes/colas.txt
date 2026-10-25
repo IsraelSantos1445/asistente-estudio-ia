@@ -1,0 +1,12 @@
+Una cola es una estructura de datos lineal que sigue el principio FIFO
+(First In, First Out): el primer elemento que entra es el primero que sale.
+
+Operaciones principales:
+- encolar (enqueue): agrega un elemento al final de la cola.
+- desencolar (dequeue): elimina y devuelve el elemento del frente.
+- frente (peek): consulta el primer elemento sin eliminarlo.
+- estaVacia: indica si la cola no tiene elementos.
+
+Una bicola (deque) permite insertar y eliminar elementos por ambos extremos.
+
+Las colas se usan en impresoras, atención de clientes y planificación de procesos.

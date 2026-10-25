@@ -110,4 +110,4 @@ asistente-estudio-ia/
 **Israel Santos**, estudiante de Ingeniería en Informática en Instituto Tecnológico de Durango (ITD).
 
 - LinkedIn: [Israel Santos](www.linkedin.com/in/israelsantosalvarado)
-- GitHub: [IsraelSantos1445](https://github.com/IsraelSantos1445)
+- GitHub: [IsraelSantos1445](https://www.linkedin.com/in/israelsantosalvarado)
