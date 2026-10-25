@@ -12,7 +12,9 @@ Proyecto personal creado para practicar Java, consumo de APIs y manejo de depend
 
 ##  Demo
 
-![Demo del programa](docs/captura.png)
+![Demo del programa 1era Fase](docs/captura.png)
+
+![Demo del programa 2da Fase](docs/captura2.png)
 
 Ejemplo de uso:
 
