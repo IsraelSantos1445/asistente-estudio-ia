@@ -135,7 +135,7 @@ public class Main {
         HttpRequest peticion = HttpRequest.newBuilder()
                 .uri(URI.create(URL_OLLAMA))
                 .header("content-type", "application/json")
-                .timeout(Duration.ofMinutes(3))
+                .timeout(Duration.ofMinutes(6))
                 .POST(HttpRequest.BodyPublishers.ofString(cuerpo.toString()))
                 .build();
 
