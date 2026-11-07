@@ -15,6 +15,8 @@ Proyecto personal creado para practicar Java, consumo de APIs y manejo de depend
 ![Demo del programa 1era Fase](docs/captura.png)
 #Captura fase 2
 ![Demo del programa 2da Fase](docs/captura2.png)
+#Captura fase 3
+![Demo del programa 3ra Fase](docs/captura3.png)
 
 Ejemplo de uso:
 
@@ -81,11 +83,13 @@ Al ejecutar el programa aparece este menú:
 
 1.Hacer una pregunta
 2.Analizar un archivo de apuntes y generar preguntas de práctica
-3.Salir
+3.Modo quiz
+4.Salir
 
 
 - **Opción 1:** escribe cualquier pregunta y el modelo responde.
 - **Opción 2:** indica la ruta de un archivo (Enter usa `apuntes/colas.txt`) y, si quieres, una instrucción específica. Con Enter genera 5 preguntas de práctica por defecto.
+- **Opción 3.** el programa te hace preguntas basadas en tus apuntes, evalúa tus respuestas y al final muestra tu puntaje
 
 
 ## Cómo funciona
@@ -111,7 +115,7 @@ asistente-estudio-ia/
 - [x] Enviar una pregunta a un modelo local y mostrar la respuesta
 - [x] Leer apuntes desde un archivo `.txt` y usarlos como contexto
 - [x] Generar preguntas de práctica con instrucción personalizada
-- [ ] Responder las preguntas y que el programa evalúe las respuestas
+- [x] Responder las preguntas y que el programa evalúe las respuestas
 - [ ] Separar el código en clases (cliente, lector de apuntes, quiz)
 - [ ] Agregar una interfaz gráfica
 

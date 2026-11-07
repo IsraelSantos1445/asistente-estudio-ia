@@ -128,8 +128,8 @@ public class Main {
 
         System.out.println("Preparando preguntas...");
         String peticion = "Eres un tutor de ingeniería en informática. "
-                + "Con base únicamente en los siguientes apuntes, genera exactamente 5 preguntas cortas. "
-                + "Escribe una pregunta por línea, numeradas como 1. 2. 3. 4. 5. "
+                + "Con base únicamente en los siguientes apuntes, genera exactamente 3 preguntas cortas. "
+                + "Escribe una pregunta por línea, numeradas como 1. 2. 3."
                 + "No incluyas respuestas ni texto adicional. Responde en español.\n\nAPUNTES:\n" + apuntes;
 
         String texto = preguntarAlModelo(peticion);
