@@ -11,9 +11,9 @@ Programa en Java con menú interactivo que permite hacer preguntas a un modelo d
 Proyecto personal creado para practicar Java, consumo de APIs y manejo de dependencias con Maven.
 
 ##  Demo
-
+#Captura fase 1
 ![Demo del programa 1era Fase](docs/captura.png)
-
+#Captura fase 2
 ![Demo del programa 2da Fase](docs/captura2.png)
 
 Ejemplo de uso:
