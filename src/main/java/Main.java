@@ -1,24 +1,13 @@
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 public class Main {
-
-    private static final String URL_OLLAMA = "http://localhost:11434/api/chat";
-    private static final String MODELO = "llama3.2:1b";
     private static final String ARCHIVO_POR_DEFECTO = "apuntes/colas.txt";
+    private static final ClienteOllama cliente = new ClienteOllama("llama3.2:1b");
 
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
@@ -70,7 +59,7 @@ public class Main {
         }
 
         System.out.println("Pensando...");
-        String respuesta = preguntarAlModelo(pregunta);
+        String respuesta = cliente.preguntar(pregunta);
 
         if (respuesta != null) {
             System.out.println("\n" + respuesta);
@@ -107,7 +96,7 @@ public class Main {
                 + "Responde en español.\n\nAPUNTES:\n" + apuntes;
 
         System.out.println("Generando...");
-        String respuesta = preguntarAlModelo(instruccion);
+        String respuesta = cliente.preguntar(instruccion);
 
         if (respuesta != null) {
             System.out.println("\n" + respuesta);
@@ -132,7 +121,7 @@ public class Main {
                 + "Escribe una pregunta por línea, numeradas como 1. 2. 3."
                 + "No incluyas respuestas ni texto adicional. Responde en español.\n\nAPUNTES:\n" + apuntes;
 
-        String texto = preguntarAlModelo(peticion);
+        String texto = cliente.preguntar(peticion);
         if (texto == null) {
             return;
         }
@@ -202,7 +191,7 @@ public class Main {
                 + "PREGUNTA: " + pregunta + "\n"
                 + "RESPUESTA DEL ESTUDIANTE: " + respuesta;
 
-        return preguntarAlModelo(peticion, 0.1);
+        return cliente.preguntar(peticion, 0.1);
     }
 
     // Lee el veredicto de la última parte de la evaluación
@@ -234,53 +223,4 @@ public class Main {
         }
     }
 
-        // Versión normal: temperatura por defecto
-    private static String preguntarAlModelo(String texto) throws Exception {
-        return preguntarAlModelo(texto, 0.7);
-    }
-
-    // Versión con temperatura elegida
-    private static String preguntarAlModelo(String texto, double temperatura) throws Exception {
-        JsonObject mensaje = new JsonObject();
-        mensaje.addProperty("role", "user");
-        mensaje.addProperty("content", texto);
-
-        JsonArray mensajes = new JsonArray();
-        mensajes.add(mensaje);
-
-        JsonObject opciones = new JsonObject();
-        opciones.addProperty("temperature", temperatura);
-        opciones.addProperty("num_predict", 600);
-
-        JsonObject cuerpo = new JsonObject();
-        cuerpo.addProperty("model", MODELO);
-        cuerpo.add("messages", mensajes);
-        cuerpo.addProperty("stream", false);
-        cuerpo.addProperty("keep_alive", "30m");
-        cuerpo.add("options", opciones);
-
-        HttpRequest peticion = HttpRequest.newBuilder()
-                .uri(URI.create(URL_OLLAMA))
-                .header("content-type", "application/json")
-                .timeout(Duration.ofMinutes(3))
-                .POST(HttpRequest.BodyPublishers.ofString(cuerpo.toString()))
-                .build();
-
-        HttpResponse<String> respuesta;
-        try {
-            respuesta = HttpClient.newHttpClient()
-                    .send(peticion, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            System.out.println("No pude conectar con Ollama. ¿Está abierta la app?");
-            return null;
-        }
-
-        if (respuesta.statusCode() != 200) {
-            System.out.println("Error " + respuesta.statusCode() + ": " + respuesta.body());
-            return null;
-        }
-
-        JsonObject json = JsonParser.parseString(respuesta.body()).getAsJsonObject();
-        return json.getAsJsonObject("message").get("content").getAsString();
-    }
 }
