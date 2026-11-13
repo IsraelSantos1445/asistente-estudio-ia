@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -74,7 +71,7 @@ public class Main {
             ruta = ARCHIVO_POR_DEFECTO;
         }
 
-        String apuntes = leerApuntes(ruta);
+        String apuntes = LectorApuntes.leer(ruta);
         if (apuntes == null) {
             return;
         }
@@ -110,7 +107,7 @@ public class Main {
             ruta = ARCHIVO_POR_DEFECTO;
         }
 
-        String apuntes = leerApuntes(ruta);
+        String apuntes = LectorApuntes.leer(ruta);
         if (apuntes == null) {
             return;
         }
@@ -210,17 +207,6 @@ public class Main {
             return 1;
         }
         return 0;
-    }
-
-    // Lee un archivo de texto y devuelve su contenido
-    private static String leerApuntes(String ruta) {
-        try {
-            return Files.readString(Path.of(ruta));
-        } catch (IOException e) {
-            System.out.println("No pude leer el archivo: " + ruta);
-            System.out.println("Detalle: " + e.getMessage());
-            return null;
-        }
     }
 
 }
