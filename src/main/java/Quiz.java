@@ -12,9 +12,8 @@ public class Quiz {
         this.apuntes = apuntes;
     }
 
-    // Hace todo el quiz: genera preguntas, las plantea y da el resultado
-    public void jugar(Scanner sc) throws Exception {
-        System.out.println("Preparando preguntas...");
+    // Pide al modelo las preguntas. Devuelve una lista vacía si algo falla.
+    public List<String> generarPreguntas() throws Exception {
         String peticion = "Eres un tutor de ingeniería en informática. "
                 + "Con base únicamente en los siguientes apuntes, genera exactamente 5 preguntas cortas. "
                 + "Escribe una pregunta por línea, numeradas como 1. 2. 3. 4. 5. "
@@ -22,10 +21,52 @@ public class Quiz {
 
         String texto = cliente.preguntar(peticion);
         if (texto == null) {
-            return;
+            return new ArrayList<>();
         }
+        return extraerPreguntas(texto);
+    }
 
-        List<String> preguntas = extraerPreguntas(texto);
+    // Pide al modelo que razone primero y dé el veredicto al final
+    public String evaluarRespuesta(String pregunta, String respuesta) throws Exception {
+        String peticion = "Eres un tutor de ingeniería en informática que califica respuestas. "
+                + "Usa únicamente los APUNTES como fuente de verdad.\n\n"
+                + "Sigue estos pasos:\n"
+                + "1. En una línea, escribe qué dicen los apuntes sobre la pregunta.\n"
+                + "2. En una línea, escribe si la respuesta del estudiante coincide con los apuntes.\n"
+                + "3. En la última línea escribe exactamente una de estas tres opciones: "
+                + "VEREDICTO: CORRECTA, VEREDICTO: PARCIAL o VEREDICTO: INCORRECTA.\n\n"
+                + "Reglas: si la respuesta dice lo mismo que los apuntes con otras palabras, es CORRECTA. "
+                + "Si solo acierta una parte, es PARCIAL. Si dice que no sabe o contradice los apuntes, es INCORRECTA.\n\n"
+                + "APUNTES:\n" + apuntes + "\n\n"
+                + "PREGUNTA: " + pregunta + "\n"
+                + "RESPUESTA DEL ESTUDIANTE: " + respuesta;
+
+        return cliente.preguntar(peticion, 0.1);
+    }
+
+    // Convierte el veredicto del modelo en puntos
+    public static double puntajeDe(String evaluacion) {
+        String texto = evaluacion.toUpperCase();
+        int pos = texto.lastIndexOf("VEREDICTO");
+        if (pos == -1) {
+            return 0;
+        }
+        String veredicto = texto.substring(pos);
+        if (veredicto.contains("INCORRECTA")) {
+            return 0;
+        } else if (veredicto.contains("PARCIAL")) {
+            return 0.5;
+        } else if (veredicto.contains("CORRECTA")) {
+            return 1;
+        }
+        return 0;
+    }
+
+    // Versión de consola: usa los métodos de arriba
+    public void jugar(Scanner sc) throws Exception {
+        System.out.println("Preparando preguntas...");
+        List<String> preguntas = generarPreguntas();
+
         if (preguntas.isEmpty()) {
             System.out.println("No pude obtener preguntas del modelo. Intenta de nuevo.");
             return;
@@ -73,41 +114,5 @@ public class Quiz {
             }
         }
         return preguntas;
-    }
-
-    // Pide al modelo que razone primero y dé el veredicto al final
-    private String evaluarRespuesta(String pregunta, String respuesta) throws Exception {
-        String peticion = "Eres un tutor de ingeniería en informática que califica respuestas. "
-                + "Usa únicamente los APUNTES como fuente de verdad.\n\n"
-                + "Sigue estos pasos:\n"
-                + "1. En una línea, escribe qué dicen los apuntes sobre la pregunta.\n"
-                + "2. En una línea, escribe si la respuesta del estudiante coincide con los apuntes.\n"
-                + "3. En la última línea escribe exactamente una de estas tres opciones: "
-                + "VEREDICTO: CORRECTA, VEREDICTO: PARCIAL o VEREDICTO: INCORRECTA.\n\n"
-                + "Reglas: si la respuesta dice lo mismo que los apuntes con otras palabras, es CORRECTA. "
-                + "Si solo acierta una parte, es PARCIAL. Si dice que no sabe o contradice los apuntes, es INCORRECTA.\n\n"
-                + "APUNTES:\n" + apuntes + "\n\n"
-                + "PREGUNTA: " + pregunta + "\n"
-                + "RESPUESTA DEL ESTUDIANTE: " + respuesta;
-
-        return cliente.preguntar(peticion, 0.1);
-    }
-
-    // Lee el veredicto de la última parte de la evaluación
-    private double puntajeDe(String evaluacion) {
-        String texto = evaluacion.toUpperCase();
-        int pos = texto.lastIndexOf("VEREDICTO");
-        if (pos == -1) {
-            return 0;
-        }
-        String veredicto = texto.substring(pos);
-        if (veredicto.contains("INCORRECTA")) {
-            return 0;
-        } else if (veredicto.contains("PARCIAL")) {
-            return 0.5;
-        } else if (veredicto.contains("CORRECTA")) {
-            return 1;
-        }
-        return 0;
     }
 }
