@@ -13,7 +13,7 @@ public class VentanaPrincipal extends JFrame {
 
         JTabbedPane pestanas = new JTabbedPane();
         pestanas.addTab("Preguntar", new PanelPreguntar(cliente));
-        pestanas.addTab("Generar preguntas", new JLabel("Próximamente", SwingConstants.CENTER));
+        pestanas.addTab("Generar preguntas", new PanelGenerar(cliente));
         pestanas.addTab("Quiz", new JLabel("Próximamente", SwingConstants.CENTER));
 
         add(pestanas);

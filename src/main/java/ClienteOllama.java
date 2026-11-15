@@ -35,7 +35,7 @@ public class ClienteOllama {
 
         JsonObject opciones = new JsonObject();
         opciones.addProperty("temperature", temperatura);
-        opciones.addProperty("num_predict", 600);
+        opciones.addProperty("num_predict", 2000);
 
         JsonObject cuerpo = new JsonObject();
         cuerpo.addProperty("model", modelo);

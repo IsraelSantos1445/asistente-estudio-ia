@@ -11,6 +11,19 @@ public class Quiz {
         this.cliente = cliente;
         this.apuntes = apuntes;
     }
+        // Genera texto a partir de los apuntes según una instrucción libre
+    public String generarConInstruccion(String tarea) throws Exception {
+        String instruccion = tarea.isBlank()
+                ? "Genera 5 preguntas de práctica numeradas. No incluyas las respuestas."
+                : tarea;
+
+        String peticion = "Eres un tutor de ingeniería en informática. "
+                + "Usa únicamente los siguientes apuntes como base. "
+                + "Tarea: " + instruccion + " "
+                + "Responde en español.\n\nAPUNTES:\n" + apuntes;
+
+        return cliente.preguntar(peticion);
+    }
 
     // Pide al modelo las preguntas. Devuelve una lista vacía si algo falla.
     public List<String> generarPreguntas() throws Exception {
